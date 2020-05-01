@@ -1,2 +1,2 @@
-# gradle-template
-Template quick start project for gradle
+# Express.eval
+A parser and evaluator of matematical expressions
