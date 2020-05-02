@@ -18,24 +18,43 @@ public class SimpleParser implements ExprParser {
       List<String> out = Lists.newArrayList();
       LinkedList<String> stack = Lists.newLinkedList();
       List<String> exprList = Splitter.on(' ').splitToList(expression);
-      for (String s : exprList) {
-         if (NumberUtils.isDigits(s)) {
-            out.add(s);
-         } else if (isOperator(s)) {
-            stack.push(s);
+      for (String term : exprList) {
+         term = term.trim();
+         if (NumberUtils.isDigits(term)) {
+            out.add(term);
+         }  else if (isOperator(term)) {
+            while (isAllowedPop(term, stack)) {
+               out.add(stack.pop());
+            }
+            stack.push(term);
+         } else if (Operator.get(term) == Operator.LPAR) {
+            stack.push(term);
+         } else if (Operator.get(term) == Operator.RPAR) {
+            while (Operator.get(stack.peek()) != Operator.LPAR) {
+               out.add(stack.pop());
+            }
+            if (Operator.get(stack.peek()) == Operator.LPAR) {
+               stack.pop();
+            }
          }
       }
-      while (isAllowedPop(stack)) {
+      while (Objects.nonNull(stack.peek()) ) {
          out.add(stack.pop());
       }
       return Joiner.on(' ').join(out);
    }
 
-   private boolean isAllowedPop(LinkedList<String> stack) {
-      return Objects.nonNull(stack.peek());
+   private boolean isAllowedPop(String term, final LinkedList<String> stack) {
+      String peek = stack.peek();
+      Operator peekOperator = Operator.get(peek);
+      Operator termOperator = Operator.get(term);
+      return Objects.nonNull(peek) && (
+              (peekOperator.hasHigherPrecedenceThan(termOperator)) ||
+                      (peekOperator.isPrecedenceEqual(termOperator) && !peekOperator.isRightAssociative())
+              ) && peekOperator != Operator.LPAR;
    }
 
-   private boolean isOperator(String s) {
-      return "+-/*^()".contains(s);
+   private boolean isOperator(final String s) {
+      return Operator.isOperator(s);
    }
 }
