@@ -11,7 +11,7 @@ public enum Operator {
    MINUS("-", 2),
    DIV("/", 3),
    MULT("*", 3),
-   POW("^", 2, false),
+   POW("^", 4, true),
    LPAR("(", 0),
    RPAR(")", 0),
    NOOP("", -1),
@@ -42,7 +42,7 @@ public enum Operator {
    }
 
    Operator(String symbol, int precedence) {
-      this(symbol, precedence, true);
+      this(symbol, precedence, false);
    }
 
    Operator(String symbol, int precedence, boolean rightAssociative) {

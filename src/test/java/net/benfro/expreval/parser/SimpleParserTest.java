@@ -23,14 +23,20 @@ class SimpleParserTest {
            "1 * 2 + 3, 1 2 * 3 +",
            "( 1 * 2 ) + 3, 1 2 * 3 +",
            "1 * ( 2 + 3 ), 1 2 3 + *",
-           //"3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3, 3 4 2 * 1 5 − 2 3 ^ ^ / +",
+           "7 - 2 - 5, 7 2 - 5 -",
+           "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3, 3 4 2 * 1 5 - 2 3 ^ ^ / +",
    })
    void testThreeArgExpressions(String indata, String expected) {
       assertEquals(expected, instance.parse(indata));
    }
 
    @ParameterizedTest
-   @CsvSource(value = {"1 + 1, 1 1 +", "1 - 2, 1 2 -", "1 * 2, 1 2 *"})
+   @CsvSource(value = {
+           "1 + 1, 1 1 +",
+           "1 - 2, 1 2 -",
+           "1 * 2, 1 2 *",
+           "1.5 + 2.73, 1.5 2.73 +"
+   })
    void testTwoArgExpressions(String indata, String expected) {
       assertEquals(expected, instance.parse(indata));
    }

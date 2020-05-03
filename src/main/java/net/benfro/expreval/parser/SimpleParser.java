@@ -20,7 +20,7 @@ public class SimpleParser implements ExprParser {
       List<String> exprList = Splitter.on(' ').splitToList(expression);
       for (String term : exprList) {
          term = term.trim();
-         if (NumberUtils.isDigits(term)) {
+         if (NumberUtils.isParsable(term)) {
             out.add(term);
          }  else if (isOperator(term)) {
             while (isAllowedPop(term, stack)) {
@@ -38,17 +38,21 @@ public class SimpleParser implements ExprParser {
             }
          }
       }
-      while (Objects.nonNull(stack.peek()) ) {
+      while (hasNext(stack.peek())) {
          out.add(stack.pop());
       }
       return Joiner.on(' ').join(out);
+   }
+
+   private boolean hasNext(String peek) {
+      return Objects.nonNull(peek);
    }
 
    private boolean isAllowedPop(String term, final LinkedList<String> stack) {
       String peek = stack.peek();
       Operator peekOperator = Operator.get(peek);
       Operator termOperator = Operator.get(term);
-      return Objects.nonNull(peek) && (
+      return hasNext(peek) && (
               (peekOperator.hasHigherPrecedenceThan(termOperator)) ||
                       (peekOperator.isPrecedenceEqual(termOperator) && !peekOperator.isRightAssociative())
               ) && peekOperator != Operator.LPAR;
