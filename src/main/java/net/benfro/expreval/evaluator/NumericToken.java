@@ -31,6 +31,8 @@ public class NumericToken<T extends Number> implements Token {
                case MINUS -> new DoubleNumericToken(one.get() - two.get());
                case MULT -> new DoubleNumericToken(one.get() * two.get());
                case DIV -> new DoubleNumericToken(one.get() / two.get());
+               case POW -> new DoubleNumericToken(Math.pow(one.get(),two.get()));
+               case MOD -> new DoubleNumericToken( one.get() % two.get());
                default -> new DoubleNumericToken(Double.NaN);
             };
          }

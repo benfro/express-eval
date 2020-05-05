@@ -1,6 +1,7 @@
 package net.benfro.expreval.evaluator;
 
 import com.google.common.collect.Lists;
+import net.benfro.expreval.parser.Function;
 import net.benfro.expreval.parser.Operator;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -15,14 +16,13 @@ public class Evaluator {
          part = part.trim();
          if (NumberUtils.isParsable(part)) {
             stack.push(NumericToken.DoubleNumericToken.ofDoubleToken(part));
-         } else {
+         } else if(Operator.OPERATOR_STRINGS.contains(part)){
             NumericToken<Double> second = stack.pop();
             NumericToken<Double> first = stack.pop();
-            if (Operator.OPERATOR_STRINGS.contains(part)) {
-               stack.push(first.with(second).doOperation(part));
-            } else {
-               throw new IllegalArgumentException("Poff!");
-            }
+            stack.push(first.with(second).doOperation(part));
+         } else if (Function.isFunction(part)) {
+            NumericToken<Double> first = stack.pop();
+            stack.push(Function.get(part).calculate(first.value));
          }
       }
       return (stack.pop()).get();

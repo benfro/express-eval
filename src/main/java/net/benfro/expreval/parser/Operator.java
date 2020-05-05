@@ -12,6 +12,7 @@ public enum Operator {
    DIV("/", 3),
    MULT("*", 3),
    POW("^", 4, true),
+   MOD("%", 3),
    LPAR("(", 0),
    RPAR(")", 0),
    NOOP("", -1),

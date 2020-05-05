@@ -25,6 +25,7 @@ class SimpleParserTest {
            "1 * ( 2 + 3 ), 1 2 3 + *",
            "7 - 2 - 5, 7 2 - 5 -",
            "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3, 3 4 2 * 1 5 - 2 3 ^ ^ / +",
+           "sin ( abs ( -3 ) / 5 * pi ), -3 abs 5 / pi * sin",
    })
    void testThreeArgExpressions(String indata, String expected) {
       assertEquals(expected, instance.parse(indata));

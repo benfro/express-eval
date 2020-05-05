@@ -22,18 +22,20 @@ public class SimpleParser implements ExprParser {
          term = term.trim();
          if (NumberUtils.isParsable(term)) {
             out.add(term);
-         }  else if (isOperator(term)) {
+         } else if (Function.isFunction(term)) {
+            stack.push(term);
+         } else if (isOperator(term)) {
             while (isAllowedPop(term, stack)) {
                out.add(stack.pop());
             }
             stack.push(term);
-         } else if (Operator.get(term) == Operator.LPAR) {
+         } else if (isLeftParenthesis(term)) {
             stack.push(term);
-         } else if (Operator.get(term) == Operator.RPAR) {
-            while (Operator.get(stack.peek()) != Operator.LPAR) {
+         } else if (isRightParenthesis(term)) {
+            while (!isLeftParenthesis(stack.peek())) {
                out.add(stack.pop());
             }
-            if (Operator.get(stack.peek()) == Operator.LPAR) {
+            if (isLeftParenthesis(stack.peek())) {
                stack.pop();
             }
          }
@@ -42,6 +44,14 @@ public class SimpleParser implements ExprParser {
          out.add(stack.pop());
       }
       return Joiner.on(' ').join(out);
+   }
+
+   private boolean isRightParenthesis(String term) {
+      return Operator.get(term) == Operator.RPAR;
+   }
+
+   private boolean isLeftParenthesis(String term) {
+      return Operator.get(term) == Operator.LPAR;
    }
 
    private boolean hasNext(String peek) {
@@ -53,6 +63,7 @@ public class SimpleParser implements ExprParser {
       Operator peekOperator = Operator.get(peek);
       Operator termOperator = Operator.get(term);
       return hasNext(peek) && (
+              Function.isFunction(peek) ||
               (peekOperator.hasHigherPrecedenceThan(termOperator)) ||
                       (peekOperator.isPrecedenceEqual(termOperator) && !peekOperator.isRightAssociative())
               ) && peekOperator != Operator.LPAR;
