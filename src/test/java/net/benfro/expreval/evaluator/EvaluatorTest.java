@@ -21,7 +21,9 @@ class EvaluatorTest {
 
    @DisplayName("Adding RPN")
    @ParameterizedTest(name = "\"{1}\" should result in {0}")
-   @CsvSource({"2, 1 1 +",
+   @CsvSource({
+           "0, 0 0 +",
+           "2, 1 1 +",
            "3.5, 1.5 2 +",
            "6, 1 2 3 + +",
            "-2, -0.5 -1.5 +"
@@ -35,6 +37,7 @@ class EvaluatorTest {
    @CsvSource({
            "0, 1 1 -",
            "0.5, 2 1.5 -",
+           "-0.5, 1.5 2 -",
            "2, 1 3 2 - +",
            "0, 1 2 3 - +",
            "10, 7 2 5 - -",
@@ -46,7 +49,13 @@ class EvaluatorTest {
 
    @DisplayName("Multiplicating RPN")
    @ParameterizedTest(name = "\"{1}\" should result in {0}")
-   @CsvSource({"1, 1 1 *", "3, 2 1.5 *", "6, 1 3 2 * *", "35, 7 2 3 + *", "-5, -0.5 10 *"})
+   @CsvSource({"" +
+           "1, 1 1 *",
+           "3, 2 1.5 *",
+           "6, 1 3 2 * *",
+           "35, 7 2 3 + *",
+           "-5, -0.5 10 *"
+   })
    void testSimpleMultiplications(double result, String rpnExpression) {
       assertEquals(result, evaluator.evaluate(rpnExpression));
    }

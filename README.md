@@ -1,5 +1,5 @@
 # express-eval
-A parser and evaluator of matematical expressions
+A parser and evaluator of mathematical expressions
 
 Currently supports + - * / ^ ( ) abs sin cos tan atan mod log10 ln eexp exp sqrt
 
