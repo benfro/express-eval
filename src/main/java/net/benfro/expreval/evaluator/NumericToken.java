@@ -1,17 +1,19 @@
 package net.benfro.expreval.evaluator;
 
+import static java.lang.Math.pow;
+
 import net.benfro.expreval.parser.Operator;
 
-public class NumericToken<T extends Number> implements Token {
+public abstract class NumericToken<T extends Number> implements Token {
 
-   static abstract class BiToken<T extends Number> {
+   public abstract static class BiToken<T extends Number> {
 
       public final NumericToken<T> one;
       public final NumericToken<T> two;
 
       public abstract NumericToken<T> doOperation(String op);
 
-      public BiToken(NumericToken<T> one, NumericToken<T> two) {
+      protected BiToken(NumericToken<T> one, NumericToken<T> two) {
          this.one = one;
          this.two = two;
       }
@@ -27,15 +29,16 @@ public class NumericToken<T extends Number> implements Token {
          @Override
          public NumericToken<Double> doOperation(String op) {
             return switch (Operator.get(op)) {
-               case PLUS -> new DoubleNumericToken(one.get() + two.get());
-               case MINUS -> new DoubleNumericToken(one.get() - two.get());
-               case MULT -> new DoubleNumericToken(one.get() * two.get());
-               case DIV -> new DoubleNumericToken(one.get() / two.get());
-               case POW -> new DoubleNumericToken(Math.pow(one.get(),two.get()));
-               case MOD -> new DoubleNumericToken( one.get() % two.get());
-               default -> new DoubleNumericToken(Double.NaN);
-            };
+                 case PLUS -> new DoubleNumericToken(one.get() + two.get());
+                 case MINUS -> new DoubleNumericToken(one.get() - two.get());
+                 case MULT -> new DoubleNumericToken(one.get() * two.get());
+                 case DIV -> new DoubleNumericToken(one.get() / two.get());
+                 case POW -> new DoubleNumericToken(pow(one.get(), two.get()));
+                 case MOD -> new DoubleNumericToken(one.get() % two.get());
+                 default -> new DoubleNumericToken(Double.NaN);
+             };
          }
+
       }
 
       public DoubleNumericToken(Double value) {
@@ -63,7 +66,7 @@ public class NumericToken<T extends Number> implements Token {
 
    protected final T value;
 
-   public NumericToken(T value) {
+   protected NumericToken(T value) {
       this.value = value;
    }
 
@@ -76,7 +79,5 @@ public class NumericToken<T extends Number> implements Token {
       return true;
    }
 
-   public BiToken<T> with(NumericToken<T> other) {
-      return null;
-   }
+   public abstract BiToken<T> with(NumericToken<T> other);
 }
