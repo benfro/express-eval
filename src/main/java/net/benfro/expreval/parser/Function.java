@@ -18,13 +18,15 @@ public enum Function {
    TAN("tan", Math::tan),
    ATAN("atan", Math::atan),
    SQRT("sqrt", Math::sqrt),
+   CBRT("cbrt", Math::cbrt),
    EEXP("eexp", c -> Math.pow(Math.E, c)),
    EXP("exp", c -> Math.pow(10, c)),
    LN("ln", Math::log),
    LOG10("log", Math::log10),
    PI("pi", c -> Math.PI),
    E("e", c -> Math.E),
-   NOFUNC("", c -> c),
+   INV("inv", c -> 1/c),
+   NOOP("", c -> c),
    ;
 
    private static Map<String, Function> makeMapping() {
@@ -39,7 +41,7 @@ public enum Function {
    }
 
    public static Function get(String opStr) {
-      return STR_TO_FUNC.getOrDefault(opStr, NOFUNC);
+      return STR_TO_FUNC.getOrDefault(opStr, NOOP);
    }
 
    public static boolean isFunction(String opStr) {
