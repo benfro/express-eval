@@ -20,6 +20,9 @@ class ExpressionEvaluatorTest {
            "abs ( -3 ), 3",
            "exp ( 3 ), 1000",
            "abs ( 3 - 7 ), 4",
+           "exp 3, 1000",
+           "pi, 3.141592653589793",
+           "sin ( pi / 2 + 2 * pi ), 1",
    })
    void testEvaluate(String expression, double expectedResult) {
       assertEquals(expectedResult, new ExpressionEvaluator().evaluate(expression));

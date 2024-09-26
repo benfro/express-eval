@@ -2,7 +2,6 @@ package net.benfro.expreval.parser;
 
 
 import com.google.common.collect.Lists;
-import net.benfro.expreval.evaluator.DoubleNumericToken;
 import net.benfro.expreval.evaluator.NumericToken;
 
 import java.util.Arrays;
@@ -62,10 +61,6 @@ public enum Function {
    Function(String functionName, UnaryCalculator function) {
       this.functionName = functionName;
       this.function = function;
-   }
-
-   public NumericToken<Double> calculate(double in) {
-      return new DoubleNumericToken(function.calculate(in));
    }
 
    public String getFunctionName() {

@@ -10,4 +10,8 @@ public record NumericToken<T extends Number> (T value)  {
       return new NumericToken<>(numberString);
    }
 
+   public String asString() {
+      return value.toString();
+   }
+
 }
