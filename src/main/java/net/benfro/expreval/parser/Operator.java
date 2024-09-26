@@ -16,6 +16,21 @@ public enum Operator {
    LPAR("(", 0),
    RPAR(")", 0),
    NOOP("", -1),
+   ABS("abs", 4),
+   SIN("sin", 3),
+   COS("cos", 3),
+   TAN("tan", 3),
+   ATAN("atan", 3),
+   SQRT("sqrt", 3),
+   CBRT("cbrt", 3),
+   EEXP("eexp", c -> Math.pow(Math.E, c)),
+   EXP("exp", c -> Math.pow(10, c)),
+   LN("ln", Math::log),
+   LOG10("log", Math::log10),
+   PI("pi", c -> Math.PI),
+   E("e", c -> Math.E),
+   INV("inv", c -> 1/c),
+   NOOP("", c -> c),
    ;
 
    private final String symbol;

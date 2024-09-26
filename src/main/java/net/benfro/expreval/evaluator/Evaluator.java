@@ -15,7 +15,7 @@ public class Evaluator {
       for (String part : split) {
          part = part.trim();
          if (NumberUtils.isParsable(part)) {
-            stack.push(NumericToken.DoubleNumericToken.ofDoubleToken(part));
+            stack.push(DoubleNumericToken.ofDoubleToken(part));
          } else if(Operator.OPERATOR_STRINGS.contains(part)){
             NumericToken<Double> second = stack.pop();
             NumericToken<Double> first = stack.pop();
