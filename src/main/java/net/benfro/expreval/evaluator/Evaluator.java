@@ -1,9 +1,7 @@
 package net.benfro.expreval.evaluator;
 
-import com.google.common.base.Functions;
 import com.google.common.collect.Lists;
 import net.benfro.expreval.OperationLookup;
-import net.benfro.expreval.parser.Function;
 import net.benfro.expreval.parser.Operator;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -19,7 +17,7 @@ public class Evaluator {
          part = part.trim();
          if (NumberUtils.isParsable(part)) {
             stack.push(NumericToken.ofDouble(part));
-         } else if(Operator.isOperator(part)) {
+         } else if(Operator.isOperatorSymbol(part)) {
             final String temp = part;
             Operation operation = Optional.of(OperationLookup.get(Operator.get(part)))
                 .orElseThrow(() -> new IllegalStateException("The Part " + temp + " has no Operation"));

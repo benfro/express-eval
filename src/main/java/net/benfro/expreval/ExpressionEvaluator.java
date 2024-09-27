@@ -6,8 +6,8 @@ import net.benfro.expreval.parser.SimpleParser;
 
 public class ExpressionEvaluator {
 
-   private Evaluator evaluator = new Evaluator();
-   private ExprParser parser = new SimpleParser();
+   private final Evaluator evaluator = new Evaluator();
+   private final ExprParser parser = new SimpleParser();
 
    public double evaluate(String expression) {
       return evaluator.evaluate(parser.parse(expression));

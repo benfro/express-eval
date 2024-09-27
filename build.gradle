@@ -2,22 +2,33 @@ buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 
 plugins {
     id 'java'
     id 'maven-publish'
+//    id 'io.freefair.lombok' version '8.4'
+    id("io.freefair.lombok") version "8.4"
 }
+
 
 group 'net.benfro.expreval'
 version '1.0-SNAPSHOT'
 
 //sourceCompatibility = 21
 
+
+lombok {
+//    generateLombokConfig true
+//    lombokConfig file("${project.rootDir}")// false by default
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
+    gradlePluginPortal()
 }
 
 dependencies {
@@ -25,9 +36,17 @@ dependencies {
     implementation group: 'commons-io', name: 'commons-io', version: '2.7'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     //compile group: 'com.google.inject', name: 'guice', version: '4.2.2'
+//    implementation 'io.freefair.lombok:io.freefair.lombok.gradle.plugin:8.3.1'
+
     testImplementation 'org.mockito:mockito-core:5.13.0'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.6.2'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.6.2'
+
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
 test {

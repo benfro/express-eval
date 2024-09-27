@@ -11,6 +11,7 @@ public enum Operation implements BiOperation<Double> {
     POWER(Math::pow, Type.BINARY),
     LOG10((a,b) -> Math.log10(a), Type.UNARY),
     EXP((a,b) -> Math.pow(10.0, a), Type.UNARY),
+    SQRE((a,b) -> a * a, Type.UNARY),
     E_EXP((a, b) -> Math.pow(Math.E, a), Type.UNARY),
     LN((a,b) -> Math.log(a), Type.UNARY),
     SQUARE_ROOT((a, b) -> Math.sqrt(a), Type.UNARY),
@@ -42,13 +43,13 @@ public enum Operation implements BiOperation<Double> {
         }
     }
 
-    Operation(DoubleBinaryOperator exec, Type unary) {
+    Operation(DoubleBinaryOperator exec, Type type) {
         this.exec = exec;
-        this.unary = unary;
+        this.type = type;
     }
 
     private final DoubleBinaryOperator exec;
-    private final Type unary;
+    private final Type type;
 
     @Override
     public NumericToken<Double> doOp(NumericToken<Double> a, NumericToken<Double> b) {
@@ -73,7 +74,7 @@ public enum Operation implements BiOperation<Double> {
     }
 
     public Type getType() {
-        return unary;
+        return type;
     }
 
 }

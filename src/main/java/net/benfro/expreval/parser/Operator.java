@@ -1,88 +1,115 @@
 package net.benfro.expreval.parser;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public enum Operator {
-   PLUS("+", 2),
-   MINUS("-", 2),
-   DIV("/", 3),
-   MULT("*", 3),
-   POW("^", 4, true),
-   MOD("%", 3),
-   LPAR("(", 0),
-   RPAR(")", 0),
-   NOOP("", -1),
-   ABS("abs", 4),
-   SIN("sin", 1),
-   COS("cos", 1),
-   TAN("tan", 1),
-   ATAN("atan", 1),
-   SQRT("sqrt", 3),
-   CBRT("cbrt", 3),
-   EEXP("eexp", 2),
-   EXP("exp", 2),
-   LN("ln",2),
-   LOG10("log", 2),
-   PI("pi", 1),
-   E("e", 1),
-   INV("inv", 2),
-   ;
 
-   private final String symbol;
-   private final int precedence;
-   private final boolean rightAssociative;
-   public static final Map<String, Operator> STR_TO_OP = makeMapping();
-   public static final List<String> OPERATOR_STRINGS = makeOperatorList();
+    ADD("+", 2, Type.OPERATOR),
+    SUB("-", 2, Type.OPERATOR),
+    DIV("/", 3, Type.OPERATOR),
+    MULT("*", 3, Type.OPERATOR),
+    POW("^", 4,  Type.OPERATOR,true),
+    MOD("%", 3, Type.OPERATOR),
+    SQRE("**", 3, Type.OPERATOR),
+    LPAR("(", 0, Type.BRACKET),
+    RPAR(")", 0, Type.BRACKET),
+    NOOP("", -1, Type.BRACKET),
+    ABS("abs", 4, Type.FUNCTION),
+    SIN("sin", 1, Type.FUNCTION),
+    COS("cos", 1, Type.FUNCTION),
+    TAN("tan", 1, Type.FUNCTION),
+    ATAN("atan", 1, Type.FUNCTION),
+    SQRT("sqrt", 3, Type.FUNCTION),
+    CBRT("cbrt", 3, Type.FUNCTION),
+    EEXP("eexp", 2, Type.FUNCTION),
+    EXP("exp", 2, Type.FUNCTION),
+    LN("ln", 2, Type.FUNCTION),
+    LOG10("log", 2, Type.FUNCTION),
+    PI("pi", 1, Type.CONSTANT),
+    E("e", 1, Type.CONSTANT),
+    INV("inv", 2, Type.FUNCTION),
+    ;
 
-   private static Map<String, Operator> makeMapping() {
-      return Arrays.stream(values()).collect(Collectors.toMap(Operator::getSymbol, e -> e));
-   }
+    public enum Type {
+        OPERATOR,
+        FUNCTION,
+        CONSTANT,
+        BRACKET;
+    }
 
-   private static List<String> makeOperatorList() {
-      return Collections.unmodifiableList(
-              STR_TO_OP.keySet().stream().filter(k -> !"()".contains(k)).collect(Collectors.toList())
-      );
-   }
+    public static final Map<String, Operator> SYMBOL_OPERATOR_MAP = makeSymbol2OperatorMap();
+    public static final List<String> OPERATOR_SYMBOLS = makeOperatorSymbolList();
 
-   public static Operator get(String opStr) {
-      return STR_TO_OP.getOrDefault(opStr, Operator.NOOP);
-   }
+    private static Map<String, Operator> makeSymbol2OperatorMap() {
+        return Arrays.stream(values())
+            .filter(operator -> !"()".contains(operator.symbol))
+            .collect(Collectors.toMap(Operator::getSymbol, e -> e));
+    }
 
-   public static boolean isOperator(String string) {
-      return OPERATOR_STRINGS.contains(string);
-   }
+    private static List<String> makeOperatorSymbolList() {
+        return SYMBOL_OPERATOR_MAP.keySet().stream().filter(k -> !"()".contains(k)).toList();
+    }
 
-   Operator(String symbol, int precedence) {
-      this(symbol, precedence, false);
-   }
+    private final String symbol;
+    private final int precedence;
+    private final boolean rightAssociative;
+    private final Type type;
 
-   Operator(String symbol, int precedence, boolean rightAssociative) {
-      this.symbol = symbol;
-      this.precedence = precedence;
-      this.rightAssociative = rightAssociative;
-   }
+    public static Operator get(String opStr) {
+        return SYMBOL_OPERATOR_MAP.getOrDefault(opStr, Operator.NOOP);
+    }
 
-   public String getSymbol() {
-      return symbol;
-   }
+    public static boolean isOperatorSymbol(String string) {
+        return OPERATOR_SYMBOLS.contains(string);
+    }
 
-   public int getPrecedence() {
-      return precedence;
-   }
+    Operator(String symbol, int precedence, Type type) {
+        this(symbol, precedence, type, false);
+    }
 
-   public boolean isRightAssociative() {
-      return rightAssociative;
-   }
+    Operator(String symbol, int precedence, Type type, boolean rightAssociative) {
+        this.symbol = symbol;
+        this.precedence = precedence;
+        this.type = type;
+        this.rightAssociative = rightAssociative;
+    }
 
-   public boolean hasHigherPrecedenceThan(Operator other) {
-      return getPrecedence() > other.getPrecedence();
-   }
+    public String getSymbol() {
+        return symbol;
+    }
 
-   public boolean isPrecedenceEqual(Operator other) {
-      return getPrecedence() == other.getPrecedence();
-   }
+    public int getPrecedence() {
+        return precedence;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public boolean isConstant() {
+        return type == Type.CONSTANT;
+    }
+
+    public boolean isFunction() {
+        return type == Type.FUNCTION;
+    }
+
+    public boolean isOperator() {
+        return type == Type.OPERATOR;
+    }
+
+    public boolean isRightAssociative() {
+        return rightAssociative;
+    }
+
+    public boolean hasHigherPrecedenceThan(Operator other) {
+        return getPrecedence() > other.getPrecedence();
+    }
+
+    public boolean isPrecedenceEqual(Operator other) {
+        return getPrecedence() == other.getPrecedence();
+    }
 }

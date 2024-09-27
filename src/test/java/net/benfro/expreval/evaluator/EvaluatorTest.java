@@ -49,8 +49,7 @@ class EvaluatorTest {
 
    @DisplayName("Multiplicating RPN")
    @ParameterizedTest(name = "\"{1}\" should result in {0}")
-   @CsvSource({"" +
-           "1, 1 1 *",
+   @CsvSource({"1, 1 1 *",
            "3, 2 1.5 *",
            "6, 1 3 2 * *",
            "35, 7 2 3 + *",
@@ -73,9 +72,4 @@ class EvaluatorTest {
       assertEquals(result, evaluator.evaluate(rpnExpression));
    }
 
-   @Test
-   @Disabled("bug")
-   void testTrimmingIsDoneRight() {
-      evaluator.evaluate("1  1 +");
-   }
 }
