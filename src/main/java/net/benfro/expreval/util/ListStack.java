@@ -6,7 +6,9 @@ import java.util.function.Predicate;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ListStack<T> {
 
     public static <T> ListStack<T> of() {
@@ -32,18 +34,27 @@ public class ListStack<T> {
     }
 
     public void push(T value) {
-       stack.push(value);
+        stack.push(value);
+        log.info("stack::push {}", value);
+        debug();
     }
 
     public T pop() {
-        return stack.pop();
+        T pop = stack.pop();
+        log.info("stack::pop {}", pop);
+        debug();
+        return pop;
     }
 
     public T peek() {
-        if(stack.isEmpty()) {
+        if (stack.isEmpty()) {
+            log.info("stack::peek is null");
             return null;
         }
-        return stack.peek();
+        T peek = stack.peek();
+        log.info("stack::peek {}", peek);
+//        debug();
+        return peek;
     }
 
     public boolean isEmpty() {
@@ -72,9 +83,14 @@ public class ListStack<T> {
 
     public List<T> popWhile(Predicate<T> predicate) {
         List<T> result = Lists.newArrayList();
-        while(predicate.test(peek())) {
+        while (predicate.test(peek())) {
             result.add(pop());
         }
         return result;
     }
+
+    public void debug() {
+        log.info("stack:: {} <=|", toReverseList());
+    }
+
 }

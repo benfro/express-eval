@@ -35,6 +35,12 @@ dependencies {
     implementation "com.google.guava:guava:32.0.0-jre"
     implementation group: 'commons-io', name: 'commons-io', version: '2.7'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
+//    implementation 'org.slf4j:slf4j-simple:2.0.16'
+    // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
+    implementation 'ch.qos.logback:logback-classic:1.5.8'
+
+
     //compile group: 'com.google.inject', name: 'guice', version: '4.2.2'
 //    implementation 'io.freefair.lombok:io.freefair.lombok.gradle.plugin:8.3.1'
 

@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
 
-class OperatorTest {
+class DefaultOperatorTest {
 
    @Test
    void testHasHigherPrecedence() {
