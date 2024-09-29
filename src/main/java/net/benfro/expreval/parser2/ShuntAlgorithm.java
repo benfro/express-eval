@@ -27,26 +27,24 @@ public class ShuntAlgorithm {
             if (lookup.isOperator(nextToken)) {
                 log.info("========> Operator block::nextToken {}", nextToken);
                 doOnOperator(nextToken, opStack, outBuffer);
-                stateDebug();
             } else if (isLeftParenthesis(nextToken)) {
                 log.info("========> Left parenthesis block::nextToken {}", nextToken);
                 opStack.push(nextToken);
-                stateDebug();
             } else if (isRightParenthesis(nextToken)) {
                 log.info("========> Right parenthesis block::nextToken {}", nextToken);
                 doOnRightParenthesis(opStack, outBuffer);
-                stateDebug();
             } else {
                 log.info("========> Operand block - nextToken => {}", nextToken);
                 addToBuffer(nextToken, "");
-                stateDebug();
             }
+            stateDebug();
         }
 
-        while (stackIsNotEmpty()) {
+        while (!opStack.isEmpty()) {
             String pop = opStack.pop();
             addToBuffer(pop, "final");
         }
+        stateDebug();
 
         String output = String.join(" ", outBuffer);
         clear();
@@ -91,7 +89,7 @@ public class ShuntAlgorithm {
     }
 
     private void stateDebug() {
-        debugOut();
+        log.info("output:: {} <=|", outBuffer);
         opStack.debug();
     }
 
@@ -111,13 +109,5 @@ public class ShuntAlgorithm {
 
     private boolean isLeftParenthesis(String nextToken) {
         return "(".equals(nextToken);
-    }
-
-    private boolean stackIsNotEmpty() {
-        return !opStack.isEmpty();
-    }
-
-    private void debugOut() {
-        log.info("output:: {} <=|", outBuffer);
     }
 }
