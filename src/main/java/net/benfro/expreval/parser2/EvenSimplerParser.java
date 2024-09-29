@@ -8,7 +8,7 @@ import net.benfro.expreval.RPNExpressionParser;
 public class EvenSimplerParser implements RPNExpressionParser {
 
     public String parse(List<String> strings) {
-        return new ShuntAlgorithm().parse(strings);
+        return String.join(" ", new ShuntAlgorithm().parse(strings));
     }
 
     @Override

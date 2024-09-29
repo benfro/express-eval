@@ -7,5 +7,5 @@ public interface Operator {
 
     int getPrecedence();
 
-    int comparePrecedenceWith(Operator otherOperator    );
+    int comparePrecedenceWith(Operator otherOperator);
 }

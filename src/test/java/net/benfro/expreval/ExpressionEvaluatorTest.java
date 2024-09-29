@@ -1,5 +1,6 @@
 package net.benfro.expreval;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -39,5 +40,10 @@ class ExpressionEvaluatorTest {
    })
    void testEvaluate(String expression, double expectedResult) {
       assertEquals(expectedResult, new ExpressionEvaluator().evaluate(expression));
+   }
+
+   @Test
+   void debug() {
+      assertEquals(5.0, new ExpressionEvaluator().evaluate("2 + 3"));
    }
 }

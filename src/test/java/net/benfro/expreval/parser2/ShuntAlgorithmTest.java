@@ -31,7 +31,7 @@ class ShuntAlgorithmTest {
         "(o2 has greater precedence than o1 OR (o1 and o2 have equals precedence AND o1 is left associative)) " +
         "==>THEN pop o2 from stack into output queue" +
         "push o1 onto stack")
-    class TestDoOnOperator {
+    class TestDoOnFunctionExecutor {
 
         ListStack<String> opStack;
         List<String> outBuffer;
@@ -129,7 +129,7 @@ class ShuntAlgorithmTest {
 
         @Test
         @DisplayName("Empty stack")
-        void emptyStacke() {
+        void emptyStack() {
             instance.doOnRightParenthesis(opStack, outBuffer);
             assertEquals(0, outBuffer.size());
             assertEquals(0, opStack.size());

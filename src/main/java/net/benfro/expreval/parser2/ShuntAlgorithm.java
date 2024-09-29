@@ -7,21 +7,22 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import net.benfro.expreval.LookupService;
-import net.benfro.expreval.Operator;
+import net.benfro.expreval.function.FunctionInfo;
 import net.benfro.expreval.util.ListStack;
 
 @Slf4j
 public class ShuntAlgorithm {
 
     private final LookupService lookup = new DefaultLookupService();
-    private final List<String> outBuffer = Lists.newArrayList();
+
     private final ListStack<String> opStack = new ListStack<>();
 
-    public String parse(List<String> strings) {
+    public List<String> parse(List<String> strings) {
         if (Objects.isNull(strings)) {
-            return "";
+            return List.of();
         }
 
+        List<String> outBuffer = Lists.newArrayList();
         for (String nextToken : strings) {
 
             if (lookup.isOperator(nextToken)) {
@@ -35,38 +36,48 @@ public class ShuntAlgorithm {
                 doOnRightParenthesis(opStack, outBuffer);
             } else {
                 log.info("========> Operand block - nextToken => {}", nextToken);
-                addToBuffer(nextToken, "");
+                outBuffer.add(nextToken);
+                log.info("outbuffer::add {} at {}", nextToken, "");
             }
-            stateDebug();
+            log.info("output:: {} <=|", outBuffer);
+            opStack.debug();
         }
 
         while (!opStack.isEmpty()) {
             String pop = opStack.pop();
-            addToBuffer(pop, "final");
+            outBuffer.add(pop);
+            log.info("outbuffer::add {} at {}", pop, "final");
         }
-        stateDebug();
+        log.info("output:: {} <=|", outBuffer);
+        opStack.debug();
 
-        String output = String.join(" ", outBuffer);
-        clear();
+        List<String> output = outBuffer.stream().toList();
+        opStack.clear();
         return output;
     }
 
     @VisibleForTesting
     void doOnOperator(String nextToken, ListStack<String> opStack, List<String> outBuffer) {
 
-        Operator nextOperator = lookup.find(nextToken);
-        Operator topOfStackOperator = lookup.find(opStack.peek());
+        if (!opStack.isEmpty()) {
 
-        while (!opStack.isEmpty() && Objects.nonNull(topOfStackOperator) &&
-            ((topOfStackOperator.comparePrecedenceWith(nextOperator) > 0 ||
-                (topOfStackOperator.comparePrecedenceWith(nextOperator) == 0 && nextOperator.isLeftAssociative())))) {
-            outBuffer.add(opStack.pop());
+            FunctionInfo nextOperator = lookup.findInfo(nextToken);
+            FunctionInfo topOfStackOperator = lookup.findInfo(opStack.peek());
 
-            if (Objects.nonNull(opStack.peek()) && isLeftParenthesis(opStack.peek())) {
-                break;
+            while (!opStack.isEmpty() && Objects.nonNull(topOfStackOperator) &&
+                ((topOfStackOperator.comparePrecedenceWith(nextOperator) > 0 ||
+                    (topOfStackOperator.comparePrecedenceWith(nextOperator) == 0 &&
+                        nextOperator.isLeftAssociative())))) {
+                outBuffer.add(opStack.pop());
+
+                if (!opStack.isEmpty() && isLeftParenthesis(opStack.peek())) {
+                    break;
+                }
+
+                if (Objects.nonNull(opStack.peek())) {
+                    topOfStackOperator = lookup.findInfo(opStack.peek());
+                }
             }
-
-            topOfStackOperator = lookup.find(opStack.peek());
         }
 
         opStack.push(nextToken);
@@ -75,32 +86,19 @@ public class ShuntAlgorithm {
     @VisibleForTesting
     void doOnRightParenthesis(ListStack<String> opStack, List<String> outBuffer) {
 
-        Operator topOfStackOperator = lookup.find(opStack.peek());
-        while (!opStack.isEmpty() && Objects.nonNull(topOfStackOperator)) {
-            if (Objects.nonNull(opStack.peek()) && isLeftParenthesis(opStack.peek())) {
-                break;
+        if (!opStack.isEmpty()) {
+            FunctionInfo topOfStackOperator = lookup.findInfo(opStack.peek());
+            while (!opStack.isEmpty() && Objects.nonNull(topOfStackOperator)) {
+                if (Objects.nonNull(opStack.peek()) && isLeftParenthesis(opStack.peek())) {
+                    break;
+                }
+                outBuffer.add(opStack.pop());
             }
-            outBuffer.add(opStack.pop());
         }
 
         if (!opStack.isEmpty()) {
             opStack.pop();
         }
-    }
-
-    private void stateDebug() {
-        log.info("output:: {} <=|", outBuffer);
-        opStack.debug();
-    }
-
-    private void addToBuffer(String nextToken, String comment) {
-        outBuffer.add(nextToken);
-        log.info("outbuffer::add {} at {}", nextToken, comment);
-    }
-
-    private void clear() {
-        opStack.clear();
-        outBuffer.clear();
     }
 
     private static boolean isRightParenthesis(String nextToken) {

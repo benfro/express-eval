@@ -1,4 +1,4 @@
-package net.benfro.expreval.parser2;
+package net.benfro.expreval.function;
 
 import java.util.Arrays;
 
@@ -8,7 +8,8 @@ import net.benfro.expreval.Operator;
 
 @RequiredArgsConstructor
 @Getter
-public enum DefaultOperator implements Operator {
+@Deprecated
+public enum DefaultOperator implements Operator, FunctionInfo {
     ADD("+", 1, Association.LEFT),
     SUBTRACT("-", 1, Association.LEFT),
     MULTIPLY("*", 5, Association.LEFT),
@@ -36,8 +37,28 @@ public enum DefaultOperator implements Operator {
     }
 
     @Override
+    public FunctionExecutor.Arity getFunctionArity() {
+        return null;
+    }
+
+    @Override
     public int comparePrecedenceWith(Operator otherOperator) {
         return getPrecedence() - otherOperator.getPrecedence();
+    }
+
+    @Override
+    public String getSymbol() {
+        return operand;
+    }
+
+    @Override
+    public String getDesignation() {
+        return name();
+    }
+
+    @Override
+    public Type getType() {
+        return Type.OPERATOR;
     }
 
     public static boolean isOperator(String operand) {
