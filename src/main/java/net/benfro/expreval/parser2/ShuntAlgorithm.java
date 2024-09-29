@@ -13,7 +13,6 @@ public class ShuntAlgorithm {
 
     private final LookupService lookup = new DefaultLookupService();
     private final List<String> outBuffer = Lists.newArrayList();
-//    private final LinkedList<String> opStack = Lists.newLinkedList();
     private final ListStack<String> opStack = new ListStack<>();
 
     public String parse(List<String> strings) {
@@ -25,31 +24,7 @@ public class ShuntAlgorithm {
 
             if (lookup.isOperator(nextToken)) {
                 log.info("========> Operator block::nextToken {}", nextToken);
-
                 doOnOperator(nextToken, opStack, outBuffer);
-
-//                Operator incomingOperator = lookup.find(nextToken);
-//                Operator topOfStackOp = lookup.find(opStack.peek());
-//
-//                while (
-//                    Objects.nonNull(topOfStackOp) &&
-//                        stackIsNotEmpty() &&
-//                        (
-//                            leftAssociativeAndLtOrEq(incomingOperator, topOfStackOp) ||
-//                                rightAssociativeAndLt(incomingOperator, topOfStackOp)
-//                        )
-//                ) {
-//                    addToBuffer(opStack.pop(), "in while loop");
-//                    if (isLeftParenthesis(opStack.peek())) {
-//                        log.info("was ) - breaking loop");
-//                        break;
-//                    }
-//                    if (stackIsNotEmpty()) {
-//                        topOfStackOp = lookup.find(opStack.peek());
-//                    }
-//                }
-//
-//                opStack.push(nextToken);
                 stateDebug();
             } else if (isLeftParenthesis(nextToken)) {
                 log.info("========> Left parenthesis block::nextToken {}", nextToken);
@@ -58,13 +33,6 @@ public class ShuntAlgorithm {
             } else if (isRightParenthesis(nextToken)) {
                 log.info("========> Right parenthesis block::nextToken {}", nextToken);
                 doOnRightParenthesis(opStack, outBuffer);
-//                while (stackHasNext() && !isLeftParenthesis(opStack.peek())) {
-//                    String popped = opStack.pop();
-//                    addToBuffer(popped, "right parenthesis while loop");
-//                }
-//                if (!opStack.pop().equals("(")) {
-//                    throw new IllegalStateException("Must always be a left parenthesis!!");
-//                }
                 stateDebug();
             } else {
                 log.info("========> Operand block - nextToken => {}", nextToken);
@@ -91,10 +59,10 @@ public class ShuntAlgorithm {
 
         while (!opStack.isEmpty() && Objects.nonNull(topOfStackOperator) &&
             ((topOfStackOperator.comparePrecedenceWith(nextOperator) > 0 ||
-                (topOfStackOperator.comparePrecedenceWith(nextOperator) == 0 && nextOperator.isLeftAssociative()))) ) {
+                (topOfStackOperator.comparePrecedenceWith(nextOperator) == 0 && nextOperator.isLeftAssociative())))) {
             outBuffer.add(opStack.pop());
 
-            if (Objects.nonNull(opStack.peek()) && opStack.peek().equals("(")) {
+            if (Objects.nonNull(opStack.peek()) && isLeftParenthesis(opStack.peek())) {
                 break;
             }
 
@@ -109,12 +77,13 @@ public class ShuntAlgorithm {
 
         Operator topOfStackOperator = lookup.find(opStack.peek());
         while (!opStack.isEmpty() && Objects.nonNull(topOfStackOperator)) {
-            if (Objects.nonNull(opStack.peek()) && opStack.peek().equals("(")) {
+            if (Objects.nonNull(opStack.peek()) && isLeftParenthesis(opStack.peek())) {
                 break;
             }
             outBuffer.add(opStack.pop());
         }
-        if(!opStack.isEmpty()) {
+
+        if (!opStack.isEmpty()) {
             opStack.pop();
         }
     }
@@ -130,27 +99,15 @@ public class ShuntAlgorithm {
     }
 
     private void clear() {
-//        opStack.clear();
+        opStack.clear();
         outBuffer.clear();
-    }
-
-    private static boolean leftAssociativeAndLtOrEq(Operator thisOperator, Operator topOfStack) {
-        return thisOperator.isLeftAssociative() && (thisOperator.comparePrecedenceWith(topOfStack)) <= 0;
-    }
-
-    private static boolean rightAssociativeAndLt(Operator thisOperator, Operator topOfStack) {
-        return thisOperator.isRightAssociative() && (thisOperator.comparePrecedenceWith(topOfStack)) < 0;
-    }
-
-    private boolean stackHasNext() {
-        return Objects.nonNull(opStack.peek());
     }
 
     private static boolean isRightParenthesis(String nextToken) {
         return ")".equals(nextToken);
     }
 
-    private static boolean isLeftParenthesis(String nextToken) {
+    private boolean isLeftParenthesis(String nextToken) {
         return "(".equals(nextToken);
     }
 

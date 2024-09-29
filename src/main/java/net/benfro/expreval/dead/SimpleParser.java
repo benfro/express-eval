@@ -1,4 +1,4 @@
-package net.benfro.expreval.parser;
+package net.benfro.expreval.dead;
 
 import java.util.List;
 import java.util.Objects;
@@ -8,7 +8,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import net.benfro.expreval.OperationLookup;
+import net.benfro.expreval.parser.ExprParser;
+import net.benfro.expreval.parser.Operator;
+import net.benfro.expreval.util.OperationLookup;
 import net.benfro.expreval.util.StringStack;
 
 /**

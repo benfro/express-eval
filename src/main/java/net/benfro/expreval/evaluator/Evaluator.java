@@ -1,7 +1,7 @@
 package net.benfro.expreval.evaluator;
 
 import com.google.common.collect.Lists;
-import net.benfro.expreval.OperationLookup;
+import net.benfro.expreval.util.OperationLookup;
 import net.benfro.expreval.parser.Operator;
 import org.apache.commons.lang3.math.NumberUtils;
 

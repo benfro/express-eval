@@ -1,4 +1,4 @@
-package net.benfro.expreval;
+package net.benfro.expreval.util;
 
 import java.util.EnumMap;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package net.benfro.expreval;
+package net.benfro.expreval.util;
 
 import static org.junit.jupiter.api.Assertions.*;
 

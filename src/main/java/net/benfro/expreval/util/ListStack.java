@@ -89,6 +89,10 @@ public class ListStack<T> {
         return result;
     }
 
+    public void clear() {
+        stack.clear();
+    }
+
     public void debug() {
         log.info("stack:: {} <=|", toReverseList());
     }
