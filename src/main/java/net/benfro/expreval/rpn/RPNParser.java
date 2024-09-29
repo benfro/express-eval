@@ -1,11 +1,11 @@
-package net.benfro.expreval.parser2;
+package net.benfro.expreval.rpn;
 
 import java.util.List;
 
 import com.google.common.collect.Lists;
 import net.benfro.expreval.RPNExpressionParser;
 
-public class EvenSimplerParser implements RPNExpressionParser {
+public class RPNParser implements RPNExpressionParser {
 
     public String parse(List<String> strings) {
         return String.join(" ", new ShuntAlgorithm().parse(strings));

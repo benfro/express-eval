@@ -4,13 +4,14 @@ import com.google.common.collect.Lists;
 import net.benfro.expreval.LookupService;
 import net.benfro.expreval.function.ExecutableFunction;
 import net.benfro.expreval.function.FunctionInfo;
-import net.benfro.expreval.parser2.DefaultLookupService;
+import net.benfro.expreval.rpn.DefaultLookupService;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.LinkedList;
 import java.util.Optional;
 
+// TODO Rework
 public class Evaluator {
 
    private final LookupService lookup = new DefaultLookupService();

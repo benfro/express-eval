@@ -1,10 +1,6 @@
 package net.benfro.expreval.function;
 
-import net.benfro.expreval.Operator;
-
 public interface FunctionInfo {
-
-
 
     enum Type {
         OPERATOR,

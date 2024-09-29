@@ -1,4 +1,4 @@
-package net.benfro.expreval.parser2;
+package net.benfro.expreval.rpn;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,13 +16,13 @@ import com.google.common.collect.Lists;
  * https://www.web4college.com/converters/infix-to-postfix-prefix.php
  */
 
-class EvenSimplerParserTest {
+class RPNParserTest {
 
-    EvenSimplerParser evenSimplerParser;
+    RPNParser RPNParser;
 
     @BeforeEach
     void setUp() {
-        evenSimplerParser = new EvenSimplerParser();
+        RPNParser = new RPNParser();
     }
 
     @ParameterizedTest
@@ -71,13 +71,13 @@ class EvenSimplerParserTest {
     })
     void test(String indata, String expected) {
         List<String> s = Lists.newArrayList(indata.split(" "));
-        assertEquals(expected, evenSimplerParser.parse(s));
+        assertEquals(expected, RPNParser.parse(s));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void testNullEmpty(List<String> indata) {
-        assertNotNull(evenSimplerParser.parse(indata));
+        assertNotNull(RPNParser.parse(indata));
     }
 
     @ParameterizedTest
@@ -97,6 +97,6 @@ class EvenSimplerParserTest {
     })
     void testBugg(String indata, String expected) {
         List<String> s = Lists.newArrayList(indata.split(" "));
-        assertEquals(expected, evenSimplerParser.parse(s));
+        assertEquals(expected, RPNParser.parse(s));
     }
 }

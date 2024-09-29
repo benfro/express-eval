@@ -1,16 +1,14 @@
 package net.benfro.expreval;
 
-import com.google.common.collect.Lists;
 import net.benfro.expreval.evaluator.Evaluator;
-import net.benfro.expreval.parser2.EvenSimplerParser;
+import net.benfro.expreval.rpn.RPNParser;
 
 public class ExpressionEvaluator {
 
    private final Evaluator evaluator = new Evaluator();
-   private final EvenSimplerParser parser = new EvenSimplerParser();
+   private final RPNParser parser = new RPNParser();
 
    public double evaluate(String expression) {
       return evaluator.evaluate(parser.parse(expression));
    }
-
 }

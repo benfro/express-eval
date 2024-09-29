@@ -7,6 +7,8 @@ public interface LookupService {
 
     boolean isOperator(String symbol);
 
+    boolean isFunction(String symbol);
+
     FunctionInfo findInfo(String symbol);
 
     ExecutableFunction findExecutor(String part);

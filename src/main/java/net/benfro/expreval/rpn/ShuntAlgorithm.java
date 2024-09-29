@@ -1,4 +1,4 @@
-package net.benfro.expreval.parser2;
+package net.benfro.expreval.rpn;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,7 +14,6 @@ import net.benfro.expreval.util.ListStack;
 public class ShuntAlgorithm {
 
     private final LookupService lookup = new DefaultLookupService();
-
     private final ListStack<String> opStack = new ListStack<>();
 
     public List<String> parse(List<String> strings) {
