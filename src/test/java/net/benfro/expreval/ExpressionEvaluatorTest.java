@@ -25,13 +25,13 @@ class ExpressionEvaluatorTest {
            "9 % 4, 1",
            "10 % 4 * 5, 10",
            "10 % ( 2 + 1 ), 1",
-//           "abs ( -3 ), 3",
-//           "exp ( 3 ), 1000",
-//           "abs ( 3 - 7 ), 4",
-//           "exp 3, 1000",
+           "abs ( -3 ), 3",
+           "exp ( 3 ), 1000",
+           "abs ( 3 - 7 ), 4",
+           "exp 3, 1000",
 //           "pi, 3.141592653589793",
 //           "sin ( pi / 2 + 2 * pi ), 1",
-//           "inv 2, 0.5",
+           "inv 2, 0.5",
 //           "pi ^ 2.45, 0.5",
 //           "e ^ 2.45, 0.5",
 //           "e + 2.0, 4.718281828459045",
@@ -44,6 +44,6 @@ class ExpressionEvaluatorTest {
 
    @Test
    void debug() {
-      assertEquals(5.0, new ExpressionEvaluator().evaluate("2 + 3"));
+      assertEquals(100000, new ExpressionEvaluator().evaluate("exp ( 2 + 3 )"));
    }
 }

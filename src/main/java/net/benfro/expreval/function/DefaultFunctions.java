@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.google.common.base.Functions;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.benfro.expreval.evaluator.NumericToken;
 
 @RequiredArgsConstructor
 @Getter
-public enum DefaultFunctions implements FunctionInfo, ExecutableFunction<Double> {
+public enum DefaultFunctions implements FunctionInfo, ExecutableFunction<Double> , ExecutableInfo{
 
     ADD("+", 1, Type.OPERATOR, FunctionExecutor.ADDITION),
     SUB("-", 1, Type.OPERATOR, FunctionExecutor.SUBTRACTION),
@@ -41,7 +42,7 @@ public enum DefaultFunctions implements FunctionInfo, ExecutableFunction<Double>
     ;
 
     static final Map<String, DefaultFunctions> SYMBOL_OPERATOR_MAP =
-        Arrays.stream(values()).collect(Collectors.toMap(DefaultFunctions::getSymbol, e -> e));
+        Arrays.stream(values()).collect(Collectors.toMap(DefaultFunctions::getSymbol, Functions.identity()));
     static final Map<Type, List<String>> OPERATOR_SYMBOLS =
         Arrays.stream(values())
             .collect(groupingBy(DefaultFunctions::getType, mapping(DefaultFunctions::getSymbol, Collectors.toList())));
@@ -58,7 +59,7 @@ public enum DefaultFunctions implements FunctionInfo, ExecutableFunction<Double>
         return OPERATOR_SYMBOLS.get(Type.CONSTANT).contains(operand.trim());
     }
 
-    public static DefaultFunctions find(String operand) {
+    public static ExecutableInfo find(String operand) {
         return SYMBOL_OPERATOR_MAP.getOrDefault(operand.trim(), null);
     }
 
@@ -104,5 +105,15 @@ public enum DefaultFunctions implements FunctionInfo, ExecutableFunction<Double>
     @Override
     public NumericToken<Double> execute() {
         return getExecutableFunction().execute();
+    }
+
+    @Override
+    public FunctionInfo info() {
+        return this;
+    }
+
+    @Override
+    public ExecutableFunction exec() {
+        return this;
     }
 }

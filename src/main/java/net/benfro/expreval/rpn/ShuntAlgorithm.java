@@ -23,14 +23,16 @@ public class ShuntAlgorithm {
 
         List<String> outBuffer = Lists.newArrayList();
         for (String nextToken : strings) {
-
-            if (lookup.isOperator(nextToken)) {
-                log.info("========> Operator block::nextToken {}", nextToken);
-                doOnOperator(nextToken, opStack, outBuffer);
+            if(lookup.isFunction(nextToken)){
+                log.info("========> Function block::nextToken {}", nextToken);
+                opStack.push(nextToken);
             } else if (isLeftParenthesis(nextToken)) {
                 log.info("========> Left parenthesis block::nextToken {}", nextToken);
                 opStack.push(nextToken);
-            } else if (isRightParenthesis(nextToken)) {
+            } else if (lookup.isOperator(nextToken)) {
+                log.info("========> Operator block::nextToken {}", nextToken);
+                doOnOperator(nextToken, opStack, outBuffer);
+            }  else if (isRightParenthesis(nextToken)) {
                 log.info("========> Right parenthesis block::nextToken {}", nextToken);
                 doOnRightParenthesis(opStack, outBuffer);
             } else {
@@ -52,15 +54,18 @@ public class ShuntAlgorithm {
 
         List<String> output = outBuffer.stream().toList();
         opStack.clear();
+        log.info("output:: [{}]", output);
         return output;
     }
 
     @VisibleForTesting
     void doOnOperator(String nextToken, ListStack<String> opStack, List<String> outBuffer) {
 
-        if (!opStack.isEmpty()) {
+
 
             FunctionInfo nextOperator = lookup.findInfo(nextToken);
+
+        if (!opStack.isEmpty() && !isLeftParenthesis(opStack.peek())) {
             FunctionInfo topOfStackOperator = lookup.findInfo(opStack.peek());
 
             while (!opStack.isEmpty() && Objects.nonNull(topOfStackOperator) &&
@@ -85,7 +90,7 @@ public class ShuntAlgorithm {
     @VisibleForTesting
     void doOnRightParenthesis(ListStack<String> opStack, List<String> outBuffer) {
 
-        if (!opStack.isEmpty()) {
+        if (!opStack.isEmpty() && !isLeftParenthesis(opStack.peek())) {
             FunctionInfo topOfStackOperator = lookup.findInfo(opStack.peek());
             while (!opStack.isEmpty() && Objects.nonNull(topOfStackOperator)) {
                 if (Objects.nonNull(opStack.peek()) && isLeftParenthesis(opStack.peek())) {
@@ -97,6 +102,10 @@ public class ShuntAlgorithm {
 
         if (!opStack.isEmpty()) {
             opStack.pop();
+        }
+
+        if (!opStack.isEmpty() && lookup.isFunction(opStack.peek())) {
+            outBuffer.add(opStack.pop());
         }
     }
 

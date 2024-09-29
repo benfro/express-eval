@@ -2,7 +2,7 @@ package net.benfro.expreval.rpn;
 
 import net.benfro.expreval.LookupService;
 import net.benfro.expreval.function.DefaultFunctions;
-import net.benfro.expreval.function.ExecutableFunction;
+import net.benfro.expreval.function.ExecutableInfo;
 import net.benfro.expreval.function.FunctionInfo;
 
 public class DefaultLookupService implements LookupService {
@@ -19,11 +19,11 @@ public class DefaultLookupService implements LookupService {
 
     @Override
     public FunctionInfo findInfo(String symbol) {
-        return DefaultFunctions.find(symbol);
+        return DefaultFunctions.find(symbol).info();
     }
 
     @Override
-    public ExecutableFunction findExecutor(String part) {
+    public ExecutableInfo findExecutor(String part) {
         return DefaultFunctions.find(part);
     }
 

@@ -13,7 +13,7 @@ class DefaultFunctionExecutorTest {
 
    @Test
    void testHasHigherPrecedenceStatic() {
-      assertTrue(DefaultFunctions.find("*").comparePrecedenceWith(DefaultFunctions.find("+")) > 0);
+      assertTrue(DefaultFunctions.find("*").info().comparePrecedenceWith(DefaultFunctions.find("+").info()) > 0);
    }
 
 }

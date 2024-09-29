@@ -1,6 +1,6 @@
 package net.benfro.expreval;
 
-import net.benfro.expreval.function.ExecutableFunction;
+import net.benfro.expreval.function.ExecutableInfo;
 import net.benfro.expreval.function.FunctionInfo;
 
 public interface LookupService {
@@ -11,5 +11,5 @@ public interface LookupService {
 
     FunctionInfo findInfo(String symbol);
 
-    ExecutableFunction findExecutor(String part);
+    ExecutableInfo findExecutor(String part);
 }

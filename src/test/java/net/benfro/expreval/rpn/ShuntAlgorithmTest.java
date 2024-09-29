@@ -157,6 +157,20 @@ class ShuntAlgorithmTest {
             assertEquals(1, opStack.size());
             assertEquals(List.of("/"), opStack.toReverseList());
         }
+
+        @Test
+        @DisplayName("When the LP is removed - if next is a function, pop that")
+        void ifNextIsFunction() {
+            opStack.push("abs");
+            opStack.push("(");
+            opStack.push("-");
+            opStack.push("*");
+            instance.doOnRightParenthesis(opStack, outBuffer);
+            assertEquals(3, outBuffer.size());
+            assertEquals(List.of("*", "-", "abs"), outBuffer);
+            assertEquals(0, opStack.size());
+            assertEquals(List.of(), opStack.toReverseList());
+        }
     }
 
 }
