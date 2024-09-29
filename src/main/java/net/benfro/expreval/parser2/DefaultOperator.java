@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.benfro.expreval.Operator;
 
 @RequiredArgsConstructor
 @Getter

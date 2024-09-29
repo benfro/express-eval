@@ -71,13 +71,13 @@ class EvenSimplerParserTest {
     })
     void test(String indata, String expected) {
         List<String> s = Lists.newArrayList(indata.split(" "));
-        assertEquals(expected, evenSimplerParser.shuntAlgoritm(s));
+        assertEquals(expected, evenSimplerParser.parse(s));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void testNullEmpty(List<String> indata) {
-        assertNotNull(evenSimplerParser.shuntAlgoritm(indata));
+        assertNotNull(evenSimplerParser.parse(indata));
     }
 
     @ParameterizedTest
@@ -97,6 +97,6 @@ class EvenSimplerParserTest {
     })
     void testBugg(String indata, String expected) {
         List<String> s = Lists.newArrayList(indata.split(" "));
-        assertEquals(expected, evenSimplerParser.shuntAlgoritm(s));
+        assertEquals(expected, evenSimplerParser.parse(s));
     }
 }

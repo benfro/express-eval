@@ -1,5 +1,7 @@
 package net.benfro.expreval.parser2;
 
+import net.benfro.expreval.LookupService;
+
 public class DefaultLookupService implements LookupService {
 
     @Override

@@ -1,4 +1,4 @@
-package net.benfro.expreval.parser2;
+package net.benfro.expreval;
 
 public interface Operator {
     boolean isLeftAssociative();

@@ -8,7 +8,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import net.benfro.expreval.parser.ExprParser;
+import net.benfro.expreval.RPNExpressionParser;
 import net.benfro.expreval.parser.Operator;
 import net.benfro.expreval.util.OperationLookup;
 import net.benfro.expreval.util.StringStack;
@@ -16,7 +16,7 @@ import net.benfro.expreval.util.StringStack;
 /**
  * https://en.wikipedia.org/wiki/Shunting-yard_algorithm
  */
-public class SimpleParser implements ExprParser {
+public class SimpleParser implements RPNExpressionParser {
     @Override
     public String parse(String expression) {
         List<String> outputQueue = Lists.newArrayList();
