@@ -28,6 +28,8 @@ public class Evaluator {
             extracted(part, stack);
          } else if(lookup.isFunction(part)) {
             extracted(part, stack);
+         } else if(lookup.isConstant(part)) {
+            extracted(part, stack);
          }
       }
       return (stack.pop()).value();

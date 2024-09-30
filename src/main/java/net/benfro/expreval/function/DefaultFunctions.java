@@ -30,6 +30,7 @@ public enum DefaultFunctions implements FunctionInfo, ExecutableFunction<Double>
     COS("cos", 1, Type.FUNCTION, FunctionExecutor.COSINE),
     TAN("tan", 1, Type.FUNCTION, FunctionExecutor.TANGENT),
     ATAN("atan", 1, Type.FUNCTION, FunctionExecutor.ATANGENT),
+    POWTO("pow", 1, Type.FUNCTION, FunctionExecutor.POWER),
     SQRT("sqrt", 3, Type.FUNCTION, FunctionExecutor.SQUARE_ROOT),
     CBRT("cbrt", 3, Type.FUNCTION, FunctionExecutor.CUBE_ROOT),
     EEXP("eexp", 2, Type.FUNCTION, FunctionExecutor.E_EXP),

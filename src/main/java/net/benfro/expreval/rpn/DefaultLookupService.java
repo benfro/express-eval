@@ -27,4 +27,9 @@ public class DefaultLookupService implements LookupService {
         return DefaultFunctions.find(part);
     }
 
+    @Override
+    public boolean isConstant(String symbol) {
+        return DefaultFunctions.isConstant(symbol);
+    }
+
 }

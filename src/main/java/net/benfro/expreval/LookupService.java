@@ -12,4 +12,6 @@ public interface LookupService {
     FunctionInfo findInfo(String symbol);
 
     ExecutableInfo findExecutor(String part);
+
+    boolean isConstant(String part);
 }
