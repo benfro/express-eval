@@ -1,6 +1,6 @@
 # express-eval
 A parser and evaluator of mathematical expressions
 
-Currently supports + - * / ^ ( ) abs sin cos tan atan mod log10 ln eexp exp sqrt
+Currently supports + - * / ^ ( ) abs sin cos tan atan mod log10 ln eexp exp sqrt cbrt pow pi e
 
 Caveat: In the current version every sign/term has to be separated by blank steps. So '2 - ( 3 * ( 5 - 2 ) )' will work.
