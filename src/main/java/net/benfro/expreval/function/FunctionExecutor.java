@@ -15,19 +15,24 @@ public enum FunctionExecutor implements ExecutableFunction<Double> {
     DIVISION((a,b) -> a / b, Arity.BINARY),
     MODULUS((a,b) -> a % b, Arity.BINARY),
     POWER(Math::pow, Arity.BINARY),
-    LOG10((a,b) -> Math.log10(a), Arity.UNARY),
-    EXP((a,b) -> Math.pow(10.0, a), Arity.UNARY),
-    SQRE((a,b) -> a * a, Arity.UNARY),
-    E_EXP((a, b) -> Math.pow(Math.E, a), Arity.UNARY),
-    LN((a,b) -> Math.log(a), Arity.UNARY),
-    SQUARE_ROOT((a, b) -> Math.sqrt(a), Arity.UNARY),
-    CUBE_ROOT((a, b) -> Math.cbrt(a), Arity.UNARY),
-    SINE((a, b) -> Math.sin(a), Arity.UNARY),
-    COSINE((a, b) -> Math.cos(a), Arity.UNARY),
-    TANGENT((a, b) -> Math.tan(a), Arity.UNARY),
-    ATANGENT((a, b) -> Math.atan(a), Arity.UNARY),
-    INVERSE((a, b) -> 1.0/a, Arity.UNARY),
-    ABSOLUTE((a, b) -> Math.abs(a), Arity.UNARY),
+    MAX(Math::max, Arity.BINARY),
+    MIN(Math::min, Arity.BINARY),
+    LOG10((a,ignore) -> Math.log10(a), Arity.UNARY),
+    EXP((a,ignore) -> Math.exp(a), Arity.UNARY),
+    SQUARE((a, ignore) -> a * a, Arity.UNARY),
+//    E_EXP((a, b) -> Math.pow(Math.E, a), Arity.UNARY),
+    LN((a,ignore) -> Math.log(a), Arity.UNARY),
+    LOGA((a,b) -> Math.log(a) / Math.log(b), Arity.BINARY),
+    SQUARE_ROOT((a, ignore) -> Math.sqrt(a), Arity.UNARY),
+    CUBE_ROOT((a, ignore) -> Math.cbrt(a), Arity.UNARY),
+    SINE((a, ignore) -> Math.sin(a), Arity.UNARY),
+    COSINE((a, ignore) -> Math.cos(a), Arity.UNARY),
+    TANGENT((a, ignore) -> Math.tan(a), Arity.UNARY),
+    ATANGENT((a, ignore) -> Math.atan(a), Arity.UNARY),
+    INVERSE((a, ignore) -> 1.0/a, Arity.UNARY),
+    ABSOLUTE((a, ignore) -> Math.abs(a), Arity.UNARY),
+    CIELING((a, ignore) -> Math.ceil(a), Arity.UNARY),
+    FLOOR((a, ignore) -> Math.floor(a), Arity.UNARY),
     PI((a, b) -> Math.PI, Arity.CONSTANT),
     E((a, b) -> Math.E, Arity.CONSTANT),
     ;
@@ -61,6 +66,7 @@ public enum FunctionExecutor implements ExecutableFunction<Double> {
         return NumericToken.ofDouble(exec.applyAsDouble(a.value(), b.value()));
     }
 
+    @Override
     public NumericToken<Double> execute(NumericToken<Double> a) {
         if(!getFunctionArity().isUnary()) {
             throw new IllegalArgumentException("BiOperation not supported for unary operations");
@@ -68,6 +74,7 @@ public enum FunctionExecutor implements ExecutableFunction<Double> {
         return NumericToken.ofDouble(exec.applyAsDouble(a.value(), Double.NaN));
     }
 
+    @Override
     public NumericToken<Double> execute() {
         if(!getFunctionArity().isConstant()) {
             throw new IllegalArgumentException("Constant");

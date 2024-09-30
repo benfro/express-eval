@@ -23,47 +23,45 @@ public class ShuntAlgorithm {
 
         List<String> outBuffer = Lists.newArrayList();
         for (String nextToken : strings) {
-            if(lookup.isFunction(nextToken)){
-                log.info("========> Function block::nextToken {}", nextToken);
+            if (lookup.isFunction(nextToken)) {
+                log.debug("========> Function block::nextToken {}", nextToken);
                 opStack.push(nextToken);
             } else if (isLeftParenthesis(nextToken)) {
-                log.info("========> Left parenthesis block::nextToken {}", nextToken);
+                log.debug("========> Left parenthesis block::nextToken {}", nextToken);
                 opStack.push(nextToken);
             } else if (lookup.isOperator(nextToken)) {
-                log.info("========> Operator block::nextToken {}", nextToken);
+                log.debug("========> Operator block::nextToken {}", nextToken);
                 doOnOperator(nextToken, opStack, outBuffer);
-            }  else if (isRightParenthesis(nextToken)) {
-                log.info("========> Right parenthesis block::nextToken {}", nextToken);
+            } else if (isRightParenthesis(nextToken)) {
+                log.debug("========> Right parenthesis block::nextToken {}", nextToken);
                 doOnRightParenthesis(opStack, outBuffer);
             } else {
-                log.info("========> Operand block - nextToken => {}", nextToken);
+                log.debug("========> Operand block - nextToken => {}", nextToken);
                 outBuffer.add(nextToken);
-                log.info("outbuffer::add {} at {}", nextToken, "");
+                log.debug("outbuffer::add {} at {}", nextToken, "");
             }
-            log.info("output:: {} <=|", outBuffer);
+            log.debug("output:: {} <=|", outBuffer);
             opStack.debug();
         }
 
         while (!opStack.isEmpty()) {
             String pop = opStack.pop();
             outBuffer.add(pop);
-            log.info("outbuffer::add {} at {}", pop, "final");
+            log.debug("outbuffer::add {} at {}", pop, "final");
         }
-        log.info("output:: {} <=|", outBuffer);
+        log.debug("output:: {} <=|", outBuffer);
         opStack.debug();
 
         List<String> output = outBuffer.stream().toList();
         opStack.clear();
-        log.info("output:: [{}]", output);
+        log.debug("output:: [{}]", output);
         return output;
     }
 
     @VisibleForTesting
     void doOnOperator(String nextToken, ListStack<String> opStack, List<String> outBuffer) {
 
-
-
-            FunctionInfo nextOperator = lookup.findInfo(nextToken);
+        FunctionInfo nextOperator = lookup.findInfo(nextToken);
 
         if (!opStack.isEmpty() && !isLeftParenthesis(opStack.peek())) {
             FunctionInfo topOfStackOperator = lookup.findInfo(opStack.peek());

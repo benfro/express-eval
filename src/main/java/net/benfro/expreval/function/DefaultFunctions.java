@@ -12,8 +12,10 @@ import java.util.stream.Collectors;
 import com.google.common.base.Functions;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.benfro.expreval.evaluator.NumericToken;
 
+@Slf4j
 @RequiredArgsConstructor
 @Getter
 public enum DefaultFunctions implements FunctionInfo, ExecutableFunction<Double> , ExecutableInfo{
@@ -24,21 +26,27 @@ public enum DefaultFunctions implements FunctionInfo, ExecutableFunction<Double>
     MULT("*", 10, Type.OPERATOR, FunctionExecutor.MULTIPLICATION),
     POW("^", 20, Type.OPERATOR, FunctionExecutor.POWER, false),
     MOD("%", 10, Type.OPERATOR, FunctionExecutor.MODULUS),
-    SQRE("**", 10, Type.OPERATOR, FunctionExecutor.SQRE),
+    SQUARE("**", 10, Type.OPERATOR, FunctionExecutor.SQUARE),
     ABS("abs", 4, Type.FUNCTION, FunctionExecutor.ABSOLUTE),
     SIN("sin", 1, Type.FUNCTION, FunctionExecutor.SINE),
     COS("cos", 1, Type.FUNCTION, FunctionExecutor.COSINE),
     TAN("tan", 1, Type.FUNCTION, FunctionExecutor.TANGENT),
     ATAN("atan", 1, Type.FUNCTION, FunctionExecutor.ATANGENT),
-    POWTO("pow", 1, Type.FUNCTION, FunctionExecutor.POWER),
+    POWER("pow", 1, Type.FUNCTION, FunctionExecutor.POWER),
     SQRT("sqrt", 3, Type.FUNCTION, FunctionExecutor.SQUARE_ROOT),
     CBRT("cbrt", 3, Type.FUNCTION, FunctionExecutor.CUBE_ROOT),
-    EEXP("eexp", 2, Type.FUNCTION, FunctionExecutor.E_EXP),
+    EEXP("eexp", 2, Type.FUNCTION, FunctionExecutor.EXP),
     EXP("exp", 2, Type.FUNCTION, FunctionExecutor.EXP),
     LN("ln", 2, Type.FUNCTION, FunctionExecutor.LN),
-    LOG10("log", 2, Type.FUNCTION, FunctionExecutor.LOG10),
+    LOGA("loga", 2, Type.FUNCTION, FunctionExecutor.LOGA),
+    LOG10("lg", 2, Type.FUNCTION, FunctionExecutor.LOG10),
     INV("inv", 2, Type.FUNCTION, FunctionExecutor.INVERSE),
+    MAX("max", 2, Type.FUNCTION, FunctionExecutor.MAX),
+    MIN("min", 2, Type.FUNCTION, FunctionExecutor.MIN),
+    CEILING("ceil", 2, Type.FUNCTION, FunctionExecutor.CIELING),
+    FLOOR("floor", 2, Type.FUNCTION, FunctionExecutor.FLOOR),
     PI("pi", 1, Type.CONSTANT, FunctionExecutor.PI),
+    PI2("π", 1, Type.CONSTANT, FunctionExecutor.PI),
     E("e", 1, Type.CONSTANT, FunctionExecutor.E),
     ;
 
@@ -58,6 +66,12 @@ public enum DefaultFunctions implements FunctionInfo, ExecutableFunction<Double>
 
     public static boolean isConstant(String operand) {
         return OPERATOR_SYMBOLS.get(Type.CONSTANT).contains(operand.trim());
+    }
+
+    public static void getInf0() {
+        log.info("Available operands: {}", OPERATOR_SYMBOLS.get(Type.OPERATOR));
+        log.info("Available functions: {}", OPERATOR_SYMBOLS.get(Type.FUNCTION));
+        log.info("Available constants: {}", OPERATOR_SYMBOLS.get(Type.CONSTANT));
     }
 
     public static ExecutableInfo find(String operand) {

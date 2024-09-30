@@ -45,6 +45,7 @@ class ExpressionEvaluatorTest {
 
    @Test
    void debug() {
-      assertEquals(3.141592653589793, new ExpressionEvaluator().evaluate("pi"));
+      assertEquals(2, new ExpressionEvaluator().evaluate("ln ( 100 ) / ln ( 10 )"));
+      assertEquals(2, new ExpressionEvaluator().evaluate("loga ( 100 10 )"));
    }
 }

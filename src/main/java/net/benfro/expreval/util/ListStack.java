@@ -3,6 +3,7 @@ package net.benfro.expreval.util;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -23,6 +24,10 @@ public class ListStack<T> {
         return new ListStack<>(elements);
     }
 
+    public static <T> ListStack<T> of(Stream<T> elements) {
+        return new ListStack<>(elements.toList());
+    }
+
     private final LinkedList<T> stack;
 
     public ListStack() {
@@ -35,25 +40,24 @@ public class ListStack<T> {
 
     public void push(T value) {
         stack.push(value);
-        log.info("stack::push {}", value);
+        log.debug("stack::push {}", value);
         debug();
     }
 
     public T pop() {
         T pop = stack.pop();
-        log.info("stack::pop {}", pop);
+        log.debug("stack::pop {}", pop);
         debug();
         return pop;
     }
 
     public T peek() {
         if (stack.isEmpty()) {
-            log.info("stack::peek is null");
+            log.debug("stack::peek == null");
             return null;
         }
         T peek = stack.peek();
-        log.info("stack::peek {}", peek);
-//        debug();
+        log.debug("stack::peek {}", peek);
         return peek;
     }
 
@@ -94,7 +98,7 @@ public class ListStack<T> {
     }
 
     public void debug() {
-        log.info("stack:: {} <=|", toReverseList());
+        log.debug("stack:: {} <=|", toReverseList());
     }
 
 }
