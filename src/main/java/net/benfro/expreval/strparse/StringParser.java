@@ -1,8 +1,8 @@
 package net.benfro.expreval.strparse;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import net.benfro.expreval.function.DefaultFunctions;
 import net.benfro.expreval.util.CharStack;
@@ -31,10 +31,9 @@ public class StringParser {
     }
 
     public List<String> parse(String str) {
-        CharStack stack = new CharStack();
-//        Stream<Character> characterStream = str.chars().mapToObj(i -> (char) i);
+        CharStack tempStack = new CharStack();
         ListStack<Character> dataStack = ListStack.of(str.chars().mapToObj(i -> (char) i));
-        List<String> result = new ArrayList<>();
+        List<String> result = Lists.newArrayList();
         CharClass currentClass = CharClass.NONE;
         while (dataStack.hasNext()) {
 
@@ -47,21 +46,20 @@ public class StringParser {
             }
 
             if (tempClass != currentClass) {
-
-                if (!stack.isEmpty()) {
-                    String item = stack.compile();
+                if (!tempStack.isEmpty()) {
+                    String item = tempStack.flush();
                     result.add(item);
                 }
 
-                stack.push(next);
+                tempStack.push(next);
 
                 currentClass = tempClass;
             } else {
-                stack.push(next);
+                tempStack.push(next);
             }
 
-            if (dataStack.isEmpty() && !stack.isEmpty()) {
-                String item = stack.compile();
+            if (dataStack.isEmpty() && !tempStack.isEmpty()) {
+                String item = tempStack.flush();
                 result.add(item);
             }
         }

@@ -16,13 +16,13 @@ public class ShuntAlgorithm {
     private final LookupService lookup = new DefaultLookupService();
     private final ListStack<String> opStack = new ListStack<>();
 
-    public List<String> parse(List<String> strings) {
-        if (Objects.isNull(strings)) {
+    public List<String> parse(List<String> tokenList) {
+        if (Objects.isNull(tokenList)) {
             return List.of();
         }
 
         List<String> outBuffer = Lists.newArrayList();
-        for (String nextToken : strings) {
+        for (String nextToken : tokenList) {
             if (lookup.isFunction(nextToken)) {
                 log.debug("========> Function block::nextToken {}", nextToken);
                 opStack.push(nextToken);
@@ -49,6 +49,7 @@ public class ShuntAlgorithm {
             outBuffer.add(pop);
             log.debug("outbuffer::add {} at {}", pop, "final");
         }
+
         log.debug("output:: {} <=|", outBuffer);
         opStack.debug();
 
